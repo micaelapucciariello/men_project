@@ -30,3 +30,20 @@ app.get("/", function (request, response) {
     }
   });
 });
+
+app.post("/", function (request, response) {
+  var new_value = Food({
+    tittle: request.body.tittle,
+    description: request.body.description,
+  });
+
+  new_value.save(function (err) {
+    if (!err) {
+        response.send("saved!");
+    }else{
+      response.send("something went wrong :(");
+    }
+  });
+
+  
+});
