@@ -21,7 +21,7 @@ app.listen(3000, function(){
     console.log("server up and running!");
 });
 
-app.get("/", function (request, response) {
+app.get("/item", function (request, response) {
   Food.find(function (err, articles) {
     if (err == null) {
       response.send(JSON.stringify(articles));
@@ -31,7 +31,7 @@ app.get("/", function (request, response) {
   });
 });
 
-app.post("/", function (request, response) {
+app.post("/item", function (request, response) {
   var new_value = Food({
     tittle: request.body.tittle,
     description: request.body.description,
@@ -44,6 +44,34 @@ app.post("/", function (request, response) {
       response.send("something went wrong :(");
     }
   });
+});
 
-  
+app.delete("/item", function (request, response) {
+  Food.deleteMany(function (err) {
+    if (err != nil) {
+      response.send("There was a problem deleting items");
+    } else {
+      response.send("All items were deleted");
+    }
+  });
+});
+
+app.get("/item/:tittle", function (request, response) {
+  Food.findOne({ tittle: request.params.tittle }, function (err, article) {
+    if(err!=null){
+      response.send("There was a problem getting the item")
+    }else{
+      response.send(article);
+    }
+  });
+});
+
+app.delete("/item/:tittle", function (request, response) {
+  Food.deleteOne({ tittle: request.params.tittle }, function (err) {
+    if (err!=null){
+      response.send("There was a problem deleting the item")
+    }else{
+      response.send("Item deleted");
+    }
+  });
 });
